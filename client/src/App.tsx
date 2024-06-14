@@ -1,16 +1,23 @@
 
-
-
+import ThemeProvider from "./theme";
+import {BrowserRouter,Route,Routes} from 'react-router-dom'
+import Login from "./Pages/auth/Login";
+import Register from "./Pages/auth/Register";
+import Home from "./Pages/private/Home";
 
 function App() {
-
-
   return (
-    <div className="h-screen flex justify-center items-center bg-gray-700">
- <h1 className="text-white text-3xl font-bold">HomePage</h1>
-    </div>
-   
+    <ThemeProvider>
+ <BrowserRouter>
+   <Routes>
+    <Route path="/login" element={<Login/>}/>
+    <Route path="/register" element={<  Register/>}/>
+    <Route path="/" element={<Home/>}/>
+   </Routes>
+   </BrowserRouter>
+  
+    </ThemeProvider>
   )
 }
 
-export default App
+export default App;
