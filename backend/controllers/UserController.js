@@ -1,6 +1,6 @@
 const express = require("express");
 const User = require("../models/UserModel");
-const sendToken = require("../utils/sendToken")
+const sendToken = require("../utils/sendToken");
 
 //register User
 exports.register = async (req, res, next) => {
@@ -53,10 +53,35 @@ exports.login = async (req, res, next) => {
       });
     }
 
-sendToken(user,200,res)
+    sendToken(user, 200, res);
+  
 
-   
+    res.status(201).json({
+      message: "logged in successfully",
+      token,
+    });
   } catch (err) {
     console.log(err);
+  }
+};
+
+//get current user
+exports.getMe = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id);
+
+    res.status(200).json({
+      message: "succesfull",
+      data: {
+        user,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(404).json({
+      message: {
+        err,
+      },
+    });
   }
 };

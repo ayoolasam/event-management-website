@@ -9,6 +9,8 @@ const DB = process.env.DB;
 mongoose.connect(DB).then(() => {
   console.log("Database Connected");
 });
+
+
 app.use(express.json());
 app.use(cookieparser());
 

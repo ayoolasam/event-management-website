@@ -1,15 +1,43 @@
 import { Link } from "react-router-dom";
 import Welcome from "./common/Welcome";
-import { Input, Button, Form } from "antd";
+import { Input, Button, Form, message } from "antd";
+import { registerUser } from "../../apiServices/users-service";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const[loading ,setLoading]=useState(false)
+  const navigate = useNavigate()
+  const onFinish = async (values: never) => {
+    try {
+      setLoading(true)
+     
+      const response = await registerUser(values);
+      message.success(response.message);
+      navigate("/login")
+    } catch (error:any) {
+      message.error(
+        error.response?.data.message || 
+        error.message);
+    }finally{
+      setLoading(false)
+    }
+  };
+
+
+
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2">
       <div className="col-span-1 lg:flex hidden">
         <Welcome />
       </div>
       <div className=" h-screen items-center flex justify-center">
-        <Form className="flex flex-col gap-8  font-bold" layout="vertical">
+        <Form
+          className="flex flex-col gap-8  font-bold"
+          layout="vertical"
+          onFinish={onFinish}
+        >
           <h1 className="text-gray-600 font-bold text-2xl">
             Register our Account
           </h1>
@@ -38,7 +66,7 @@ const Register = () => {
             <Input.Password placeholder="Password" />
           </Form.Item>
 
-          <Button type="primary">Register</Button>
+          <Button type="primary" htmlType="submit" loading={loading}>Register</Button>
           <Link to="/login">
             <h2 className="text-gray-600 font-bold text-xl">
               Already have an account? Log In
